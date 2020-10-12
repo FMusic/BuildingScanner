@@ -12,7 +12,7 @@ import org.bs.pr.model.GpsSpot
 import org.bs.pr.model.Room
 import java.lang.Exception
 
-class GpsScanner(context: Context): Scanner{
+class GpsScanner(context: Context) : Scanner {
     private lateinit var room: Room
     private var shouldScan = false
     var ctx: Context
@@ -27,27 +27,29 @@ class GpsScanner(context: Context): Scanner{
     }
 
     override fun scan() {
-        if (shouldScan){
-            while(shouldScan){
-                var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(ctx)
-                var mSettingsClient = LocationServices.getSettingsClient(ctx)
+        if (shouldScan) {
+            var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(ctx)
+            var mSettingsClient = LocationServices.getSettingsClient(ctx)
 
-                if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(ctx,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    throw Exception("Don't have permissions")
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return
-                }else{
-                    mFusedLocationClient.lastLocation.addOnSuccessListener {
-                        process(it.altitude, it.latitude, it.longitude)
-                    }
+            if (ActivityCompat.checkSelfPermission(ctx,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(ctx,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            ) {
+                throw Exception("Don't have permissions")
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            } else{
+                while (shouldScan) {
+                }
+                mFusedLocationClient.lastLocation.addOnSuccessListener {
+                    process(it.altitude, it.latitude, it.longitude)
                 }
             }
         }
