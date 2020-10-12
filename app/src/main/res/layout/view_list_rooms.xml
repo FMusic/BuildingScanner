@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvRoomName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Medium Text"
+    android:textStyle="bold"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:layout_marginStart="@dimen/margin_left_list_view"
+    android:layout_marginTop="@dimen/margin_top_list_view"
+    android:padding="@dimen/padding"
+    android:textColor="#4d4d4d"
+    />

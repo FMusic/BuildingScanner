@@ -1,0 +1,3 @@
+include ':app:placereader'
+include ':app'
+rootProject.name = "BuildingScanner"

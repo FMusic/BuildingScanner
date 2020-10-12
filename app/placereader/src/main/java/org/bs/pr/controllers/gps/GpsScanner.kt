@@ -1,0 +1,65 @@
+package org.bs.pr.controllers.gps
+
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationServices
+import org.bs.pr.controllers.Scanner
+import org.bs.pr.model.GpsSpot
+import org.bs.pr.model.Room
+import java.lang.Exception
+
+class GpsScanner(context: Context): Scanner{
+    private lateinit var room: Room
+    private var shouldScan = false
+    var ctx: Context
+
+    init {
+        shouldScan = true
+        ctx = context
+    }
+
+    override fun changeRoom(newRoom: Room) {
+        room = newRoom
+    }
+
+    override fun scan() {
+        if (shouldScan){
+            while(shouldScan){
+                var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(ctx)
+                var mSettingsClient = LocationServices.getSettingsClient(ctx)
+
+                if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(ctx,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    throw Exception("Don't have permissions")
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return
+                }else{
+                    mFusedLocationClient.lastLocation.addOnSuccessListener {
+                        process(it.altitude, it.latitude, it.longitude)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun process(altitude: Double, latitude: Double, longitude: Double) {
+        room.gpsSpots.add(GpsSpot(altitude, latitude, longitude))
+
+    }
+
+    override fun stopScan() {
+        shouldScan = false
+    }
+
+}
