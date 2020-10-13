@@ -8,18 +8,19 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationServices
 import org.bs.pr.controllers.Scanner
+import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.GpsSpot
 import org.bs.pr.model.Room
 import java.lang.Exception
 
-class GpsScanner(context: Context) : Scanner {
+class GpsScanner(context: Context, listener: PlaceReaderListener) : Scanner {
     private lateinit var room: Room
     private var shouldScan = false
-    var ctx: Context
+    var ctx: Context = context
+    var readerListener = listener
 
     init {
         shouldScan = true
-        ctx = context
     }
 
     override fun changeRoom(newRoom: Room) {
@@ -56,8 +57,9 @@ class GpsScanner(context: Context) : Scanner {
     }
 
     private fun process(altitude: Double, latitude: Double, longitude: Double) {
-        room.gpsSpots.add(GpsSpot(altitude, latitude, longitude))
-
+        val gpsSpot = GpsSpot(altitude, latitude, longitude)
+        room.gpsSpots.add(gpsSpot)
+        readerListener.onGpsChange(gpsSpot)
     }
 
     override fun stopScan() {
