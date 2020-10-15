@@ -1,14 +1,11 @@
-package org.bs.pr.controllers.mobile
+package org.bs.pr.bl.mobile
 
 import android.content.Context
-import android.provider.ContactsContract
-import android.service.autofill.Validators.or
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
-import org.bs.pr.controllers.Scanner
+import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.Room
-import java.util.concurrent.Executor
 
 class TransmitterScanner(context: Context, prl: PlaceReaderListener): Scanner,
     PhoneStateListener() {

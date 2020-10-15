@@ -1,4 +1,4 @@
-package org.bs.pr.controllers
+package org.bs.pr.bl
 
 import org.bs.pr.model.Room
 

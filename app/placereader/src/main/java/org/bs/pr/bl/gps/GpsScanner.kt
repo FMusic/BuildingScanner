@@ -1,13 +1,11 @@
-package org.bs.pr.controllers.gps
+package org.bs.pr.bl.gps
 
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationServices
-import org.bs.pr.controllers.Scanner
+import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.GpsSpot
 import org.bs.pr.model.Room

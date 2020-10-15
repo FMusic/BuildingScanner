@@ -1,9 +1,9 @@
-package org.bs.pr.controllers.wifi
+package org.bs.pr.bl.wifi
 
 import android.content.Context
 import android.net.wifi.ScanResult
 import org.bs.pr.Constants
-import org.bs.pr.controllers.Scanner
+import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.Room
 import org.bs.pr.model.WifiAvailable

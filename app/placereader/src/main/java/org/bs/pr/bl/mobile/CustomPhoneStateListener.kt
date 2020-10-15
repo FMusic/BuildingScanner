@@ -1,4 +1,4 @@
-package org.bs.pr.controllers.mobile
+package org.bs.pr.bl.mobile
 
 import android.content.Context
 import android.telephony.CellInfo
