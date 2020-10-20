@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/app/api_communicator" />
             <option value="$PROJECT_DIR$/app/placereader" />
           </set>
         </option>
