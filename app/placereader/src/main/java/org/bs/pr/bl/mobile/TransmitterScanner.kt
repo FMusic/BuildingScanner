@@ -15,12 +15,14 @@ class TransmitterScanner(context: Context, prl: PlaceReaderListener): Scanner,
     lateinit var room: Room
     var cpsl = CustomPhoneStateListener(ctx, readerListener)
 
+    val events = (LISTEN_CELL_INFO or LISTEN_CELL_LOCATION or LISTEN_SIGNAL_STRENGTHS)
+
     var tManager: TelephonyManager =  ctx.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
 
     init{
         shouldScan = true
-        tManager.listen(cpsl, LISTEN_CELL_INFO or LISTEN_CELL_LOCATION or LISTEN_SIGNAL_STRENGTHS )
+        tManager.listen(cpsl, events )
     }
 
     override fun changeRoom(newRoom: Room) {

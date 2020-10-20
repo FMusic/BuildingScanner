@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 import org.bs.R
+import org.bs.pr.PlaceReader
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.GpsSpot
 import org.bs.pr.model.MobileSpot
@@ -19,12 +20,14 @@ class ScanActivity : AppCompatActivity(), PlaceReaderListener {
     lateinit var lvRoomScanned: ListView
     lateinit var tvLog: TextView
     lateinit var tvRoomName: TextView
+    lateinit var placeReader: PlaceReader
 
     var arrRooms = ArrayList<String>()
     var adapter = ArrayAdapter(this, R.layout.view_list_rooms, R.id.tvRoomName, arrRooms)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setWidgets()
+        placeReader = PlaceReader(this, this)
     }
 
     private fun setWidgets() {
@@ -48,13 +51,14 @@ class ScanActivity : AppCompatActivity(), PlaceReaderListener {
     }
 
     fun btnStartClick(view: View) {
+        placeReader.startScan()
     }
 
     fun btnStopClick(view: View) {
-
+        placeReader.stopScan()
     }
     fun btnNewRoom(view: View) {
-
+        placeReader.newRoom()
     }
 
     override fun onRoomScanned(r: Room) {
