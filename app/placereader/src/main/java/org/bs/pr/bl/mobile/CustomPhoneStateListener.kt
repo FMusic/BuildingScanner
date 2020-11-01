@@ -10,15 +10,16 @@ import android.telephony.gsm.GsmCellLocation
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.MobileSpot
 import org.bs.pr.model.Room
+import org.bs.pr.model.Space
 
-class CustomPhoneStateListener(context: Context, rl: PlaceReaderListener) : PhoneStateListener() {
+class CustomPhoneStateListener(context: Context, rl: PlaceReaderListener?) : PhoneStateListener() {
     var ctx = context
     var readerListener = rl
-    var room: Room? = null
+    var room: Space? = null
     var ms: MobileSpot? = null
     var memoryOn = false
 
-    fun ChangeRoom(newRoom: Room) {
+    fun ChangeRoom(newRoom: Space) {
         if (ms != null && room != null) {
             room?.mobileSpots?.add(ms!!)
         }
@@ -36,20 +37,23 @@ class CustomPhoneStateListener(context: Context, rl: PlaceReaderListener) : Phon
 
     override fun onCellInfoChanged(cellInfo: MutableList<CellInfo>?) {
         super.onCellInfoChanged(cellInfo)
-        cellInfo?.stream()?.map { x-> ms?.cells?.add(x) }
+        cellInfo?.stream()?.map { x -> ms?.cells?.add(x) }
+        readerListener?.onMobileSpotChange(ms!!)
     }
 
     override fun onCellLocationChanged(location: CellLocation?) {
         super.onCellLocationChanged(location)
-        if (location != null){
+        if (location != null) {
             ms?.locations?.add(location)
+            readerListener?.onMobileSpotChange(ms!!)
         }
     }
 
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength?) {
         super.onSignalStrengthsChanged(signalStrength)
-        if (signalStrength != null){
+        if (signalStrength != null) {
             ms?.strengths?.add(signalStrength)
+            readerListener?.onMobileSpotChange(ms!!)
         }
     }
 }

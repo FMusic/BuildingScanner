@@ -6,14 +6,15 @@ import org.bs.pr.Constants
 import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.Room
+import org.bs.pr.model.Space
 import org.bs.pr.model.WifiAvailable
 import java.lang.Thread.sleep
 import android.net.wifi.WifiManager as WifiManager
 
-class WifiScanner(ctx: Context, prl: PlaceReaderListener) : Scanner{
+class WifiScanner(ctx: Context, prl: PlaceReaderListener?) : Scanner {
     var shouldScan = false
     var wifiManager: WifiManager
-    lateinit var room: Room
+    lateinit var room: Space
     var readerListener = prl
 
     init{
@@ -21,7 +22,7 @@ class WifiScanner(ctx: Context, prl: PlaceReaderListener) : Scanner{
         wifiManager = ctx.getSystemService(Context.WIFI_SERVICE) as WifiManager
     }
 
-    override fun changeRoom(newRoom: Room){
+    override fun changeRoom(newRoom: Space){
         room = newRoom
     }
 
@@ -44,7 +45,7 @@ class WifiScanner(ctx: Context, prl: PlaceReaderListener) : Scanner{
         }
         room.addWifiSpot(wifiSpots)
         for (spot in wifiSpots){
-            readerListener.onNewWifiDetected(spot)
+            readerListener?.onNewWifiDetected(spot)
         }
     }
 }

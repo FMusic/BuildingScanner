@@ -6,16 +6,17 @@ import android.telephony.TelephonyManager
 import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.Room
+import org.bs.pr.model.Space
 
-class TransmitterScanner(context: Context, prl: PlaceReaderListener): Scanner,
+class TransmitterScanner(context: Context, prl: PlaceReaderListener?): Scanner,
     PhoneStateListener() {
     var ctx = context
     var readerListener = prl
     var shouldScan = false
-    lateinit var room: Room
+    lateinit var room: Space
     var cpsl = CustomPhoneStateListener(ctx, readerListener)
 
-    val events = (LISTEN_CELL_INFO or LISTEN_CELL_LOCATION or LISTEN_SIGNAL_STRENGTHS)
+    private val events = (LISTEN_CELL_INFO or LISTEN_CELL_LOCATION or LISTEN_SIGNAL_STRENGTHS)
 
     var tManager: TelephonyManager =  ctx.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
@@ -25,7 +26,7 @@ class TransmitterScanner(context: Context, prl: PlaceReaderListener): Scanner,
         tManager.listen(cpsl, events )
     }
 
-    override fun changeRoom(newRoom: Room) {
+    override fun changeRoom(newRoom: Space) {
         room = newRoom
         cpsl.ChangeRoom(newRoom)
     }

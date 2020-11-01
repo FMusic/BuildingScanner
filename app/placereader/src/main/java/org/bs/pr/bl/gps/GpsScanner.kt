@@ -9,10 +9,11 @@ import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.GpsSpot
 import org.bs.pr.model.Room
+import org.bs.pr.model.Space
 import java.lang.Exception
 
-class GpsScanner(context: Context, listener: PlaceReaderListener) : Scanner {
-    private lateinit var room: Room
+class GpsScanner(context: Context, listener: PlaceReaderListener?) : Scanner {
+    private lateinit var room: Space
     private var shouldScan = false
     var ctx: Context = context
     var readerListener = listener
@@ -21,7 +22,7 @@ class GpsScanner(context: Context, listener: PlaceReaderListener) : Scanner {
         shouldScan = true
     }
 
-    override fun changeRoom(newRoom: Room) {
+    override fun changeRoom(newRoom: Space) {
         room = newRoom
     }
 
@@ -57,7 +58,7 @@ class GpsScanner(context: Context, listener: PlaceReaderListener) : Scanner {
     private fun process(altitude: Double, latitude: Double, longitude: Double) {
         val gpsSpot = GpsSpot(altitude, latitude, longitude)
         room.gpsSpots.add(gpsSpot)
-        readerListener.onGpsChange(gpsSpot)
+        readerListener?.onGpsChange(gpsSpot)
     }
 
     override fun stopScan() {
