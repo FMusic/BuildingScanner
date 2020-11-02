@@ -12,6 +12,7 @@ import org.bs.pr.model.GpsSpot
 import org.bs.pr.model.MobileSpot
 import org.bs.pr.model.Room
 import org.bs.pr.model.WifiAvailable
+import org.bs.views.DialogHelper
 
 class ScanActivity : AppCompatActivity(), PlaceReaderListener {
     lateinit var btnStartScan: Button
@@ -23,9 +24,12 @@ class ScanActivity : AppCompatActivity(), PlaceReaderListener {
     lateinit var placeReader: PlaceReader
 
     var arrRooms = ArrayList<String>()
-    var adapter = ArrayAdapter(this, R.layout.view_list_rooms, R.id.tvRoomName, arrRooms)
+    lateinit var adapter: ArrayAdapter<String?>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        adapter = ArrayAdapter(this, R.layout.view_list_rooms, R.id.tvRoomName,
+            arrRooms as List<String?>)
         setWidgets()
         placeReader = PlaceReader(this, this)
     }
@@ -58,26 +62,36 @@ class ScanActivity : AppCompatActivity(), PlaceReaderListener {
         placeReader.stopScan()
     }
     fun btnNewRoom(view: View) {
-        placeReader.newRoom()
+        placeReader.newRoom(DialogHelper().showDialog(this, getString(R.string.new_room_title)))
     }
 
     override fun onRoomScanned(r: Room) {
-        TODO("Not yet implemented")
+        var text = tvLog.text.toString()
+        text += r.roomName + "finished"
+        tvLog.text = text
     }
 
     override fun onRoomStarted(r: Room) {
-        TODO("Not yet implemented")
+        var text = tvLog.text.toString()
+        text += r.roomName + "started"
+        tvLog.text = text
     }
 
     override fun onGpsChange(gpsSpot: GpsSpot) {
-        TODO("Not yet implemented")
+        var text = tvLog.text.toString()
+        text += "New gps: " + gpsSpot.altitude + " " + gpsSpot.latitude + " " + gpsSpot.longitude
+        tvLog.text = text
     }
 
     override fun onMobileSpotChange(mobileSpot: MobileSpot) {
-        TODO("Not yet implemented")
+        var text = tvLog.text.toString()
+        text += "Loaded new mobile spot"
+        tvLog.text = text
     }
 
     override fun onNewWifiDetected(wifiAvailable: WifiAvailable) {
-        TODO("Not yet implemented")
+        var text = tvLog.text.toString()
+        text += "new wifi detected ${wifiAvailable.SSID}"
+        tvLog.text = text
     }
 }
