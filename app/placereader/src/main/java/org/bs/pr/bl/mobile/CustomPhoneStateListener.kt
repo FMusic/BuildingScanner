@@ -19,7 +19,7 @@ class CustomPhoneStateListener(context: Context, rl: PlaceReaderListener?) : Pho
     var ms: MobileSpot? = null
     var memoryOn = false
 
-    fun ChangeRoom(newRoom: Space) {
+    fun changeRoom(newRoom: Space) {
         if (ms != null && room != null) {
             room?.mobileSpots?.add(ms!!)
         }

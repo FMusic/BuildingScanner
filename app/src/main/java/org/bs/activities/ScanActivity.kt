@@ -12,16 +12,18 @@ import org.bs.pr.model.GpsSpot
 import org.bs.pr.model.MobileSpot
 import org.bs.pr.model.Room
 import org.bs.pr.model.WifiAvailable
+import org.bs.presenters.ScanPresenter
 import org.bs.views.DialogHelper
 
-class ScanActivity : AppCompatActivity(), PlaceReaderListener {
+class ScanActivity : AppCompatActivity() {
     lateinit var btnStartScan: Button
     lateinit var btnStopScan: Button
     lateinit var btnNewRoom: Button
     lateinit var lvRoomScanned: ListView
     lateinit var tvLog: TextView
     lateinit var tvRoomName: TextView
-    lateinit var placeReader: PlaceReader
+
+    lateinit var scanPresenter: ScanPresenter
 
     var arrRooms = ArrayList<String>()
     lateinit var adapter: ArrayAdapter<String?>
@@ -31,7 +33,7 @@ class ScanActivity : AppCompatActivity(), PlaceReaderListener {
         adapter = ArrayAdapter(this, R.layout.view_list_rooms, R.id.tvRoomName,
             arrRooms as List<String?>)
         setWidgets()
-        placeReader = PlaceReader(this, this)
+        scanPresenter = ScanPresenter(this)
     }
 
     private fun setWidgets() {
@@ -55,43 +57,15 @@ class ScanActivity : AppCompatActivity(), PlaceReaderListener {
     }
 
     fun btnStartClick(view: View) {
-        placeReader.startScan()
+        scanPresenter.startScan()
     }
 
     fun btnStopClick(view: View) {
-        placeReader.stopScan()
+        scanPresenter.stopScan()
     }
+
     fun btnNewRoom(view: View) {
-        placeReader.newRoom(DialogHelper().showDialog(this, getString(R.string.new_room_title)))
+        scanPresenter.newRoom()
     }
 
-    override fun onRoomScanned(r: Room) {
-        var text = tvLog.text.toString()
-        text += r.roomName + "finished"
-        tvLog.text = text
-    }
-
-    override fun onRoomStarted(r: Room) {
-        var text = tvLog.text.toString()
-        text += r.roomName + "started"
-        tvLog.text = text
-    }
-
-    override fun onGpsChange(gpsSpot: GpsSpot) {
-        var text = tvLog.text.toString()
-        text += "New gps: " + gpsSpot.altitude + " " + gpsSpot.latitude + " " + gpsSpot.longitude
-        tvLog.text = text
-    }
-
-    override fun onMobileSpotChange(mobileSpot: MobileSpot) {
-        var text = tvLog.text.toString()
-        text += "Loaded new mobile spot"
-        tvLog.text = text
-    }
-
-    override fun onNewWifiDetected(wifiAvailable: WifiAvailable) {
-        var text = tvLog.text.toString()
-        text += "new wifi detected ${wifiAvailable.SSID}"
-        tvLog.text = text
-    }
 }

@@ -1,21 +1,16 @@
 package org.bs.pr.bl.mobile
 
+import android.Manifest
 import android.content.Context
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
 import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.Room
 import org.bs.pr.model.Space
 
 class TransmitterScanner(context: Context, prl: PlaceReaderListener?): Scanner,
-    PhoneStateListener(),PermissionListener {
+    PhoneStateListener() {
     var ctx = context
     var readerListener = prl
     var shouldScan = false
@@ -29,16 +24,12 @@ class TransmitterScanner(context: Context, prl: PlaceReaderListener?): Scanner,
 
     init{
         shouldScan = true
-        Dexter.withContext(ctx)
-            .withPermission("android.permission.ACCESS_COARSE_LOCATION")
-            .withListener(this)
-            .check()
         tManager.listen(cpsl, events )
     }
 
     override fun changeRoom(newRoom: Space) {
         room = newRoom
-        cpsl.ChangeRoom(newRoom)
+        cpsl.changeRoom(newRoom)
     }
 
     override fun scan() {
@@ -47,18 +38,6 @@ class TransmitterScanner(context: Context, prl: PlaceReaderListener?): Scanner,
 
     override fun stopScan() {
         cpsl.stopMemorizing()
-    }
-
-    override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onPermissionRationaleShouldBeShown(p0: PermissionRequest?, p1: PermissionToken?) {
-        TODO("Not yet implemented")
     }
 
 
