@@ -1,4 +1,4 @@
-package org.bs.pr.model
+package org.bs.pr.model.sensors
 
 import android.telephony.CellInfo
 import android.telephony.CellLocation

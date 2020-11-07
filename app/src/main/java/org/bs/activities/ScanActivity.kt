@@ -1,21 +1,24 @@
 package org.bs.activities
 
+import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.DexterError
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.PermissionRequestErrorListener
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 import org.bs.R
-import org.bs.pr.PlaceReader
-import org.bs.pr.listeners.PlaceReaderListener
-import org.bs.pr.model.GpsSpot
-import org.bs.pr.model.MobileSpot
-import org.bs.pr.model.Room
-import org.bs.pr.model.WifiAvailable
 import org.bs.presenters.ScanPresenter
-import org.bs.views.DialogHelper
 
-class ScanActivity : AppCompatActivity() {
+class ScanActivity : AppCompatActivity(), MultiplePermissionsListener,
+    PermissionRequestErrorListener {
     lateinit var btnStartScan: Button
     lateinit var btnStopScan: Button
     lateinit var btnNewRoom: Button
@@ -33,7 +36,51 @@ class ScanActivity : AppCompatActivity() {
         adapter = ArrayAdapter(this, R.layout.view_list_rooms, R.id.tvRoomName,
             arrRooms as List<String?>)
         setWidgets()
+        askPermissions()
+    }
+
+    private fun setList() {
+        lvRoomScanned.adapter = adapter;
+        refreshAdapter()
+    }
+
+    private fun refreshAdapter() {
+        adapter.notifyDataSetChanged()
+    }
+
+    fun btnStopClick() {
+        scanPresenter.stopScan()
+    }
+
+    fun btnNewRoom() {
+        scanPresenter.newRoom()
+    }
+
+    private fun askPermissions() {
+        Dexter.withContext(this)
+            .withPermissions(
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            .withListener(this)
+            .withErrorListener(this)
+            .onSameThread()
+            .check()
+    }
+
+    override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
         scanPresenter = ScanPresenter(this)
+    }
+
+    override fun onPermissionRationaleShouldBeShown(
+        p0: MutableList<PermissionRequest>?,
+        p1: PermissionToken?
+    ) {
+        p1?.continuePermissionRequest()
+    }
+
+    override fun onError(p0: DexterError?) {
+        Log.e("Dexter", "Dexter error: " + p0.toString())
     }
 
     private fun setWidgets() {
@@ -47,25 +94,11 @@ class ScanActivity : AppCompatActivity() {
         setList()
     }
 
-    private fun setList() {
-        lvRoomScanned.adapter = adapter;
-        refreshAdapter()
-    }
-
-    private fun refreshAdapter() {
-        adapter.notifyDataSetChanged()
-    }
-
     fun btnStartClick(view: View) {
         scanPresenter.startScan()
-    }
-
-    fun btnStopClick(view: View) {
-        scanPresenter.stopScan()
-    }
-
-    fun btnNewRoom(view: View) {
-        scanPresenter.newRoom()
+        btnStartScan.isEnabled = false
+        btnStopScan.isEnabled = true
+        btnNewRoom.isEnabled = true
     }
 
 }

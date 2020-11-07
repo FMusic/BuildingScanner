@@ -1,6 +1,6 @@
 package org.bs.pr.model
 
-class Building{
-    var Rooms: ArrayList<Room> = ArrayList()
-    var Passage: Passage = Passage()
+class Building(name: String){
+    var passage = Passage()
+    var rooms = ArrayList<Room>()
 }

@@ -18,11 +18,13 @@ class PlaceReader(ctx: Context, prl: PlaceReaderListener?) {
         WifiScanner(ctx, prl)
     )
 
-    var building = Building()
+    //var building = Building()
     var passage = Passage()
+
     lateinit var room: Room
 
     fun startScan() {
+        newRoom(null)
         scanners.forEach { x -> x.scan() }
     }
 
@@ -35,7 +37,7 @@ class PlaceReader(ctx: Context, prl: PlaceReaderListener?) {
             scanners.forEach { x -> x.changeRoom(passage) }
         } else {
             room = Room(name)
-            building.Rooms.add(room)
+            //building.Rooms.add(room)
             scanners.forEach { x -> x.changeRoom(room) }
         }
     }

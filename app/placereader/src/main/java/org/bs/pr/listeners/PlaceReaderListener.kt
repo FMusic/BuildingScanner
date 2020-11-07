@@ -1,9 +1,9 @@
 package org.bs.pr.listeners
 
-import org.bs.pr.model.GpsSpot
-import org.bs.pr.model.MobileSpot
+import org.bs.pr.model.sensors.GpsSpot
+import org.bs.pr.model.sensors.MobileSpot
 import org.bs.pr.model.Room
-import org.bs.pr.model.WifiAvailable
+import org.bs.pr.model.sensors.WifiAvailable
 
 interface PlaceReaderListener {
     fun onRoomScanned(r: Room)

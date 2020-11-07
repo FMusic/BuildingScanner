@@ -1,14 +1,12 @@
 package org.bs.presenters
 
-import android.content.Context
-import org.bs.R
 import org.bs.activities.ScanActivity
 import org.bs.pr.PlaceReader
 import org.bs.pr.listeners.PlaceReaderListener
-import org.bs.pr.model.GpsSpot
-import org.bs.pr.model.MobileSpot
+import org.bs.pr.model.sensors.GpsSpot
+import org.bs.pr.model.sensors.MobileSpot
 import org.bs.pr.model.Room
-import org.bs.pr.model.WifiAvailable
+import org.bs.pr.model.sensors.WifiAvailable
 import org.bs.views.DialogHelper
 
 class ScanPresenter(scanActivity: ScanActivity) : PlaceReaderListener {
@@ -55,6 +53,6 @@ class ScanPresenter(scanActivity: ScanActivity) : PlaceReaderListener {
     }
 
     fun newRoom() {
-        placeReader.newRoom(DialogHelper().showDialog(ctx, ctx.getString(R.string.new_room_title)))
+        DialogHelper().showDialog(ctx, "New room title:", placeReader::newRoom)
     }
 }

@@ -1,11 +1,9 @@
 package org.bs.pr.model
 
-open class Space {
-    var gpsSpots = ArrayList<GpsSpot>()
-    var mobileSpots = ArrayList<MobileSpot>()
-    var wifiSpots = ArrayList<ArrayList<WifiAvailable>>()
+import org.bs.pr.model.sensors.GpsSpot
+import org.bs.pr.model.sensors.MobileSpot
+import org.bs.pr.model.sensors.WifiAvailable
 
-    fun addWifiSpot(wifiSpot: ArrayList<WifiAvailable>) {
-        wifiSpots.add(wifiSpot)
-    }
+open class Space {
+    var spots = ArrayList<Spot>()
 }

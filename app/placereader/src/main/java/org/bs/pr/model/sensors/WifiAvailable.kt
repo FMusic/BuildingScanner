@@ -1,4 +1,4 @@
-package org.bs.pr.model
+package org.bs.pr.model.sensors
 
 class WifiAvailable(ssid: String, level: Int) {
     var SSID: String = ssid

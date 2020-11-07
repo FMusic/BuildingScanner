@@ -5,23 +5,18 @@ import android.telephony.CellInfo
 import android.telephony.CellLocation
 import android.telephony.PhoneStateListener
 import android.telephony.SignalStrength
-import android.telephony.cdma.CdmaCellLocation
-import android.telephony.gsm.GsmCellLocation
 import org.bs.pr.listeners.PlaceReaderListener
-import org.bs.pr.model.MobileSpot
-import org.bs.pr.model.Room
+import org.bs.pr.model.sensors.MobileSpot
 import org.bs.pr.model.Space
 
-class CustomPhoneStateListener(context: Context, rl: PlaceReaderListener?) : PhoneStateListener() {
-    var ctx = context
-    var readerListener = rl
+class CustomPhoneStateListener(var ctx: Context, var readerListener: PlaceReaderListener?) : PhoneStateListener() {
     var room: Space? = null
     var ms: MobileSpot? = null
     var memoryOn = false
 
     fun changeRoom(newRoom: Space) {
         if (ms != null && room != null) {
-            room?.mobileSpots?.add(ms!!)
+//            room?.mobileSpots?.add(ms!!)
         }
         room = newRoom
         ms = MobileSpot()
@@ -38,22 +33,28 @@ class CustomPhoneStateListener(context: Context, rl: PlaceReaderListener?) : Pho
     override fun onCellInfoChanged(cellInfo: MutableList<CellInfo>?) {
         super.onCellInfoChanged(cellInfo)
         cellInfo?.stream()?.map { x -> ms?.cells?.add(x) }
-        readerListener?.onMobileSpotChange(ms!!)
+        if (ms != null){
+            readerListener?.onMobileSpotChange(ms!!)
+        }
     }
 
     override fun onCellLocationChanged(location: CellLocation?) {
         super.onCellLocationChanged(location)
         if (location != null) {
-            ms?.locations?.add(location)
-            readerListener?.onMobileSpotChange(ms!!)
+            if (ms != null){
+                ms?.locations?.add(location)
+                readerListener?.onMobileSpotChange(ms!!)
+            }
         }
     }
 
     override fun onSignalStrengthsChanged(signalStrength: SignalStrength?) {
         super.onSignalStrengthsChanged(signalStrength)
         if (signalStrength != null) {
-            ms?.strengths?.add(signalStrength)
-            readerListener?.onMobileSpotChange(ms!!)
+            if (ms != null){
+                ms?.strengths?.add(signalStrength)
+                readerListener?.onMobileSpotChange(ms!!)
+            }
         }
     }
 }

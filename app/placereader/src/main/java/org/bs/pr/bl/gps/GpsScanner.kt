@@ -7,16 +7,13 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
-import org.bs.pr.model.GpsSpot
-import org.bs.pr.model.Room
+import org.bs.pr.model.sensors.GpsSpot
 import org.bs.pr.model.Space
 import java.lang.Exception
 
-class GpsScanner(context: Context, listener: PlaceReaderListener?) : Scanner {
+class GpsScanner(var ctx: Context, var listener: PlaceReaderListener?) : Scanner {
     private lateinit var room: Space
     private var shouldScan = false
-    var ctx: Context = context
-    var readerListener = listener
 
     init {
         shouldScan = true
@@ -31,10 +28,14 @@ class GpsScanner(context: Context, listener: PlaceReaderListener?) : Scanner {
             var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(ctx)
             var mSettingsClient = LocationServices.getSettingsClient(ctx)
 
-            if (ActivityCompat.checkSelfPermission(ctx,
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(ctx,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            if (ActivityCompat.checkSelfPermission(
+                    ctx,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    ctx,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
             ) {
                 throw Exception("Don't have permissions")
                 // TODO: Consider calling
@@ -44,12 +45,12 @@ class GpsScanner(context: Context, listener: PlaceReaderListener?) : Scanner {
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
-                return
-            } else{
+            } else {
                 while (shouldScan) {
-                }
-                mFusedLocationClient.lastLocation.addOnSuccessListener {
-                    process(it.altitude, it.latitude, it.longitude)
+
+                    mFusedLocationClient.lastLocation.addOnSuccessListener {
+                        process(it.altitude, it.latitude, it.longitude)
+                    }
                 }
             }
         }
@@ -57,8 +58,8 @@ class GpsScanner(context: Context, listener: PlaceReaderListener?) : Scanner {
 
     private fun process(altitude: Double, latitude: Double, longitude: Double) {
         val gpsSpot = GpsSpot(altitude, latitude, longitude)
-        room.gpsSpots.add(gpsSpot)
-        readerListener?.onGpsChange(gpsSpot)
+//        room.gpsSpots.add(gpsSpot)
+        listener?.onGpsChange(gpsSpot)
     }
 
     override fun stopScan() {

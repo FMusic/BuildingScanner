@@ -5,17 +5,15 @@ import android.net.wifi.ScanResult
 import org.bs.pr.Constants
 import org.bs.pr.bl.Scanner
 import org.bs.pr.listeners.PlaceReaderListener
-import org.bs.pr.model.Room
 import org.bs.pr.model.Space
-import org.bs.pr.model.WifiAvailable
+import org.bs.pr.model.sensors.WifiAvailable
 import java.lang.Thread.sleep
 import android.net.wifi.WifiManager as WifiManager
 
-class WifiScanner(ctx: Context, prl: PlaceReaderListener?) : Scanner {
-    var shouldScan = false
-    var wifiManager: WifiManager
+class WifiScanner(private var ctx: Context, private var readerListener: PlaceReaderListener?) : Scanner {
+    private var shouldScan = false
+    private var wifiManager: WifiManager
     lateinit var room: Space
-    var readerListener = prl
 
     init{
         shouldScan = true
@@ -28,7 +26,7 @@ class WifiScanner(ctx: Context, prl: PlaceReaderListener?) : Scanner {
 
     override fun scan(){
         while(shouldScan){
-            process(wifiManager.scanResults)
+//            process(wifiManager.scanResults)
             sleep(Constants.SLEEP_TIME_MS.toLong())
         }
     }
@@ -43,7 +41,7 @@ class WifiScanner(ctx: Context, prl: PlaceReaderListener?) : Scanner {
             var wa = WifiAvailable(entry.SSID, entry.level)
             wifiSpots.add(wa)
         }
-        room.addWifiSpot(wifiSpots)
+//        room.addWifiSpot(wifiSpots)
         for (spot in wifiSpots){
             readerListener?.onNewWifiDetected(spot)
         }

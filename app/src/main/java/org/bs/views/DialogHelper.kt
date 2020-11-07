@@ -6,19 +6,19 @@ import android.content.DialogInterface
 import android.text.InputType
 import android.widget.EditText
 import org.bs.R
+import kotlin.reflect.KFunction1
 
 class DialogHelper {
-    fun showDialog(ctx: Context, title: String): String {
-        var builder = AlertDialog.Builder(ctx)
-        var input = ""
-        var inp = EditText(ctx)
+    fun showDialog(ctx: Context, title: String, functionIfPositive: KFunction1<String?, Unit>): Unit {
+        val builder = AlertDialog.Builder(ctx)
+        val inp = EditText(ctx)
         inp.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(inp)
             .setTitle(title)
             .setPositiveButton(ctx.getString(R.string.ok)) { _: DialogInterface, _: Int ->
                 @Override
                 fun onClick() {
-                    input = inp.text.toString()
+                    functionIfPositive(inp.text.toString())
                 }
             }.setNegativeButton(
                 ctx.getString(R.string.cancel)
@@ -30,6 +30,5 @@ class DialogHelper {
             }
             .create()
             .show()
-        return input
     }
 }

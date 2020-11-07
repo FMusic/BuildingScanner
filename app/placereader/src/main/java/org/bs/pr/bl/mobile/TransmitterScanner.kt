@@ -9,10 +9,8 @@ import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.Room
 import org.bs.pr.model.Space
 
-class TransmitterScanner(context: Context, prl: PlaceReaderListener?): Scanner,
+class TransmitterScanner(var ctx: Context, var readerListener: PlaceReaderListener?): Scanner,
     PhoneStateListener() {
-    var ctx = context
-    var readerListener = prl
     var shouldScan = false
     lateinit var room: Space
     var cpsl = CustomPhoneStateListener(ctx, readerListener)
