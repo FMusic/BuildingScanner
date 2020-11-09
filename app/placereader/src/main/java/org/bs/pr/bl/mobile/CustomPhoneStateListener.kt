@@ -9,7 +9,7 @@ import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.sensors.MobileSpot
 import org.bs.pr.model.Space
 
-class CustomPhoneStateListener(var ctx: Context, var readerListener: PlaceReaderListener?) : PhoneStateListener() {
+class CustomPhoneStateListener(var ctx: Context, var readerListener: List<PlaceReaderListener>) : PhoneStateListener() {
     var room: Space? = null
     var ms: MobileSpot? = null
     var memoryOn = false

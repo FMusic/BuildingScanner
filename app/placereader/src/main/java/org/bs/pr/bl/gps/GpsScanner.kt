@@ -6,12 +6,13 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import org.bs.pr.bl.Scanner
+import org.bs.pr.bl.collector.DataCollector
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.sensors.GpsSpot
 import org.bs.pr.model.Space
 import java.lang.Exception
 
-class GpsScanner(var ctx: Context, var listener: PlaceReaderListener?) : Scanner {
+class GpsScanner(var ctx: Context, var listener: List<PlaceReaderListener>) : Scanner {
     private lateinit var room: Space
     private var shouldScan = false
 

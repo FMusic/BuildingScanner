@@ -4,13 +4,17 @@ import android.content.Context
 import android.net.wifi.ScanResult
 import org.bs.pr.Constants
 import org.bs.pr.bl.Scanner
+import org.bs.pr.bl.collector.DataCollector
 import org.bs.pr.listeners.PlaceReaderListener
 import org.bs.pr.model.Space
 import org.bs.pr.model.sensors.WifiAvailable
 import java.lang.Thread.sleep
 import android.net.wifi.WifiManager as WifiManager
 
-class WifiScanner(private var ctx: Context, private var readerListener: PlaceReaderListener?) : Scanner {
+class WifiScanner(
+    private var ctx: Context,
+    private var readerListener: List<PlaceReaderListener>
+) : Scanner {
     private var shouldScan = false
     private var wifiManager: WifiManager
     lateinit var room: Space

@@ -11,4 +11,8 @@ class Spot {
     lateinit var wifiAvailable: WifiAvailable
 
     var timestamp = LocalDate.now()
+
+    fun isGpsInitialized() = ::gpsSpot.isInitialized
+    fun isMobileInitialized() = ::mobileSpot.isInitialized
+    fun isWifiInitialized() = ::wifiAvailable.isInitialized
 }
