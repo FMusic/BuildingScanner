@@ -1,16 +1,15 @@
-package org.bs.presenters
+package org.bs.scan
 
-import org.bs.activities.ScanActivity
 import org.bs.pr.PlaceReader
-import org.bs.pr.listeners.PlaceReaderListener
+import org.bs.pr.interfaces.PlaceReaderListener
 import org.bs.pr.model.sensors.GpsSpot
 import org.bs.pr.model.sensors.MobileSpot
 import org.bs.pr.model.Room
 import org.bs.pr.model.sensors.WifiAvailable
 import org.bs.views.DialogHelper
 
-class ScanPresenter(scanActivity: ScanActivity) : PlaceReaderListener {
-    var placeReader = PlaceReader(scanActivity, this)
+class ScanPresenter( var scanActivity: ScanActivity) : PlaceReaderListener {
+    var placeReader = PlaceReader(scanActivity, this, scanActivity.buildingName)
     var ctx: ScanActivity = scanActivity
 
 
@@ -23,6 +22,7 @@ class ScanPresenter(scanActivity: ScanActivity) : PlaceReaderListener {
     override fun onRoomStarted(r: Room) {
         var text = ctx.tvLog.text.toString()
         text += r.roomName + "started"
+        scanActivity.tvRoomName.text = r.roomName
         ctx.tvLog.text = text
     }
 
@@ -53,6 +53,6 @@ class ScanPresenter(scanActivity: ScanActivity) : PlaceReaderListener {
     }
 
     fun newRoom() {
-        DialogHelper().showDialog(ctx, "New room title:", placeReader::newRoom)
+        DialogHelper.showDialog(ctx, "New room title:", placeReader::newRoom)
     }
 }

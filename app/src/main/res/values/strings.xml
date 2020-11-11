@@ -7,4 +7,5 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="new_room_title">New room title:</string>
+    <string name="ibuildingname">building-name</string>
 </resources>

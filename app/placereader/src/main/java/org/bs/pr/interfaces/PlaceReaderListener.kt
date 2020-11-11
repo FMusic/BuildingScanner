@@ -1,4 +1,4 @@
-package org.bs.pr.listeners
+package org.bs.pr.interfaces
 
 import org.bs.pr.model.sensors.GpsSpot
 import org.bs.pr.model.sensors.MobileSpot

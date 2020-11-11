@@ -1,10 +1,9 @@
 package org.bs.pr
 
 import android.content.Context
-import org.bs.pr.bl.collector.DataCollector
-import org.bs.pr.listeners.PlaceReaderListener
+import org.bs.pr.bl.DataCollector
+import org.bs.pr.interfaces.PlaceReaderListener
 import org.bs.pr.model.Building
-import org.bs.pr.model.Room
 
 class PlaceReader(ctx: Context, prl: PlaceReaderListener, buildingName: String) {
     var building = Building(buildingName)

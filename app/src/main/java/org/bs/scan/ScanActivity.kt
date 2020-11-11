@@ -1,4 +1,4 @@
-package org.bs.activities
+package org.bs.scan
 
 import android.Manifest
 import android.os.Bundle
@@ -15,7 +15,6 @@ import com.karumi.dexter.listener.PermissionRequestErrorListener
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 import org.bs.R
-import org.bs.presenters.ScanPresenter
 
 class ScanActivity : AppCompatActivity(), MultiplePermissionsListener,
     PermissionRequestErrorListener {
@@ -25,14 +24,16 @@ class ScanActivity : AppCompatActivity(), MultiplePermissionsListener,
     lateinit var lvRoomScanned: ListView
     lateinit var tvLog: TextView
     lateinit var tvRoomName: TextView
+    lateinit var buildingName: String
 
-    lateinit var scanPresenter: ScanPresenter
+    private lateinit var scanPresenter: ScanPresenter
 
     var arrRooms = ArrayList<String>()
     lateinit var adapter: ArrayAdapter<String?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        buildingName = intent.getStringExtra(getString(R.string.ibuildingname))
         adapter = ArrayAdapter(this, R.layout.view_list_rooms, R.id.tvRoomName,
             arrRooms as List<String?>)
         setWidgets()

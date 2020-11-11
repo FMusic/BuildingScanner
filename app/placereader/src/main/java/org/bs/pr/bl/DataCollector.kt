@@ -1,10 +1,10 @@
-package org.bs.pr.bl.collector
+package org.bs.pr.bl
 
 import android.content.Context
-import org.bs.pr.bl.gps.GpsScanner
-import org.bs.pr.bl.mobile.TransmitterScanner
-import org.bs.pr.bl.wifi.WifiScanner
-import org.bs.pr.listeners.PlaceReaderListener
+import org.bs.pr.bl.scanners.GpsScanner
+import org.bs.pr.bl.scanners.TransmitterScanner
+import org.bs.pr.bl.scanners.WifiScanner
+import org.bs.pr.interfaces.PlaceReaderListener
 import org.bs.pr.model.*
 import org.bs.pr.model.sensors.GpsSpot
 import org.bs.pr.model.sensors.MobileSpot
@@ -14,9 +14,9 @@ class DataCollector(ctx: Context, prl: PlaceReaderListener, var building: Buildi
     val listeners = listOf(prl, this)
 
     var scanners = listOf(
-        GpsScanner(ctx, listeners),
-        TransmitterScanner(ctx, listeners),
-        WifiScanner(ctx, listeners)
+        GpsScanner(ctx),
+        TransmitterScanner(ctx),
+        WifiScanner(ctx)
     )
 
     lateinit var room: Room
@@ -26,12 +26,17 @@ class DataCollector(ctx: Context, prl: PlaceReaderListener, var building: Buildi
     lateinit var spot: Spot
 
     fun stopScan() {
-        scanners.forEach { x -> x.stopScan() }
+        scanners.forEach { it.stopScan() }
     }
 
     fun newRoom(name: String?) = if (name == null) {
         space = passage
-        scanners.forEach { x -> x.scan() }
+        scanners.forEach{
+            for (listener in listeners) {
+                it.addListener(listener)
+            }
+            it.scan()
+        }
     } else {
         room = Room(name)
         space = room

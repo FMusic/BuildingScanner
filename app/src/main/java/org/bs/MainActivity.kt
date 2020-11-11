@@ -1,18 +1,11 @@
 package org.bs
 
-import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.*
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.karumi.dexter.listener.single.PermissionListener
-import org.bs.activities.ScanActivity
+import org.bs.scan.ScanActivity
+import org.bs.views.DialogHelper
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +14,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun btnStartActClick(v: View) {
-        startActivity(Intent(applicationContext, ScanActivity::class.java))
+        DialogHelper.showDialog(this, "Input building name", ::startScanActivity)
+    }
 
+    private fun startScanActivity(va: String?){
+        if (va != null){
+            var i = Intent(applicationContext, ScanActivity::class.java)
+            i.putExtra(getString(R.string.ibuildingname), va)
+            startActivity(i)
+        }
     }
 }
