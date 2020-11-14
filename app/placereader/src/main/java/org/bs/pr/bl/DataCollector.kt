@@ -11,19 +11,19 @@ import org.bs.pr.model.sensors.MobileSpot
 import org.bs.pr.model.sensors.WifiAvailable
 
 class DataCollector(ctx: Context, prl: PlaceReaderListener, var building: Building): PlaceReaderListener {
-    val listeners = listOf(prl, this)
+    private val listeners = listOf(prl, this)
 
-    var scanners = listOf(
+    private var scanners = listOf(
         GpsScanner(ctx),
         TransmitterScanner(ctx),
         WifiScanner(ctx)
     )
 
-    lateinit var room: Room
-    var passage = Passage()
-    lateinit var space: Space
+    private lateinit var room: Room
+    private var passage = Passage()
+    private lateinit var space: Space
 
-    lateinit var spot: Spot
+    private lateinit var spot: Spot
 
     fun stopScan() {
         scanners.forEach { it.stopScan() }
@@ -70,9 +70,9 @@ class DataCollector(ctx: Context, prl: PlaceReaderListener, var building: Buildi
         spot.mobileSpot = mobileSpot
     }
 
-    override fun onNewWifiDetected(wifiAvailable: WifiAvailable) {
+    override fun onNewWifiDetected(wifiAvailable: List<WifiAvailable>) {
         checkSpot()
-        if (spot.isGpsInitialized()){
+        if (spot.isWifiInitialized()){
             space.spots.add(spot)
             spot = Spot()
         }

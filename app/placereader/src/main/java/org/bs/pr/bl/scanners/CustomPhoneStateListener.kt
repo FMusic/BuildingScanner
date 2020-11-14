@@ -11,7 +11,6 @@ import org.bs.pr.model.Space
 
 class CustomPhoneStateListener(var ctx: Context) : PhoneStateListener() {
     private var listeners = ArrayList<PlaceReaderListener>()
-    var room: Space? = null
     var ms: MobileSpot? = null
     var memoryOn = false
 
@@ -45,5 +44,7 @@ class CustomPhoneStateListener(var ctx: Context) : PhoneStateListener() {
         }
     }
 
-    fun addListener(listener: PlaceReaderListener) = listeners.add(listener)
+    fun addListener(listener: PlaceReaderListener) {
+        listeners.add(listener)
+    }
 }

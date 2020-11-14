@@ -41,7 +41,7 @@ class ScanActivity : AppCompatActivity(), MultiplePermissionsListener,
     }
 
     private fun setList() {
-        lvRoomScanned.adapter = adapter;
+        lvRoomScanned.adapter = adapter
         refreshAdapter()
     }
 
@@ -95,11 +95,11 @@ class ScanActivity : AppCompatActivity(), MultiplePermissionsListener,
         setList()
     }
 
-    fun btnStartClick(view: View) {
-        scanPresenter.startScan()
+    fun btnStartClick(v: View) {
         btnStartScan.isEnabled = false
         btnStopScan.isEnabled = true
         btnNewRoom.isEnabled = true
+        scanPresenter.startScan()
     }
 
 }

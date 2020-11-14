@@ -10,5 +10,5 @@ interface PlaceReaderListener {
     fun onRoomStarted(r: Room)
     fun onGpsChange(gpsSpot: GpsSpot)
     fun onMobileSpotChange(mobileSpot: MobileSpot)
-    fun onNewWifiDetected(wifiAvailable: WifiAvailable)
+    fun onNewWifiDetected(wifiAvailable: List<WifiAvailable>)
 }

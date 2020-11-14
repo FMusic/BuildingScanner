@@ -10,7 +10,7 @@ import org.bs.pr.model.sensors.GpsSpot
 import org.bs.pr.model.Space
 import java.lang.Exception
 
-class GpsScanner(var ctx: Context) : Scanner() {
+class GpsScanner(ctx: Context) : Scanner() {
     var mFusedLocationClient = LocationServices.getFusedLocationProviderClient(ctx)
     var mSettingsClient = LocationServices.getSettingsClient(ctx)
 
@@ -27,17 +27,15 @@ class GpsScanner(var ctx: Context) : Scanner() {
             throw Exception("Don't have permissions")
         } else {
             mFusedLocationClient.lastLocation.addOnSuccessListener {
-                process(
-                    it.altitude,
-                    it.latitude,
-                    it.longitude
-                )
+                if (it != null) {
+                    process( it.altitude, it.latitude, it.longitude)
+                }
             }
         }
     }
 
     private fun process(altitude: Double, latitude: Double, longitude: Double) {
-        if (shouldScan){
+        if (shouldScan ) {
             val gpsSpot = GpsSpot(altitude, latitude, longitude)
             listeners.forEach { it.onGpsChange(gpsSpot) }
         }

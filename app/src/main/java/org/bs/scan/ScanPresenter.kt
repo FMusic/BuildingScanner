@@ -8,40 +8,39 @@ import org.bs.pr.model.Room
 import org.bs.pr.model.sensors.WifiAvailable
 import org.bs.views.DialogHelper
 
-class ScanPresenter( var scanActivity: ScanActivity) : PlaceReaderListener {
-    var placeReader = PlaceReader(scanActivity, this, scanActivity.buildingName)
-    var ctx: ScanActivity = scanActivity
+class ScanPresenter(private var sa: ScanActivity) : PlaceReaderListener {
+    var placeReader = PlaceReader(this.sa, this, this.sa.buildingName)
 
 
     override fun onRoomScanned(r: Room) {
-        var text = ctx.tvLog.text.toString()
+        var text = this.sa.tvLog.text.toString()
         text += r.roomName + "finished"
-        ctx.tvLog.text = text
+        this.sa.tvLog.text = text
     }
 
     override fun onRoomStarted(r: Room) {
-        var text = ctx.tvLog.text.toString()
+        var text = this.sa.tvLog.text.toString()
         text += r.roomName + "started"
-        scanActivity.tvRoomName.text = r.roomName
-        ctx.tvLog.text = text
+        this.sa.tvRoomName.text = r.roomName
+        this.sa.tvLog.text = text
     }
 
     override fun onGpsChange(gpsSpot: GpsSpot) {
-        var text = ctx.tvLog.text.toString()
+        var text = this.sa.tvLog.text.toString()
         text += "New gps: " + gpsSpot.altitude + " " + gpsSpot.latitude + " " + gpsSpot.longitude
-        ctx.tvLog.text = text
+        this.sa.tvLog.text = text
     }
 
     override fun onMobileSpotChange(mobileSpot: MobileSpot) {
-        var text = ctx.tvLog.text.toString()
+        var text = this.sa.tvLog.text.toString()
         text += "Loaded new mobile spot"
-        ctx.tvLog.text = text
+        this.sa.tvLog.text = text
     }
 
-    override fun onNewWifiDetected(wifiAvailable: WifiAvailable) {
-        var text = ctx.tvLog.text.toString()
-        text += "new wifi detected ${wifiAvailable.SSID}"
-        ctx.tvLog.text = text
+    override fun onNewWifiDetected(wifiAvailable: List<WifiAvailable>) {
+        var text = this.sa.tvLog.text.toString()
+        text += "new list of wifis detected"
+        this.sa.tvLog.text = text
     }
 
     fun startScan() {
@@ -53,6 +52,6 @@ class ScanPresenter( var scanActivity: ScanActivity) : PlaceReaderListener {
     }
 
     fun newRoom() {
-        DialogHelper.showDialog(ctx, "New room title:", placeReader::newRoom)
+        DialogHelper.showDialog(this.sa, "New room title:", placeReader::newRoom)
     }
 }

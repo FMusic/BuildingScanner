@@ -8,7 +8,7 @@ import java.time.LocalDate
 class Spot {
     lateinit var gpsSpot: GpsSpot
     lateinit var mobileSpot: MobileSpot
-    lateinit var wifiAvailable: WifiAvailable
+    lateinit var wifiAvailable: List<WifiAvailable>
 
     var timestamp = LocalDate.now()
 

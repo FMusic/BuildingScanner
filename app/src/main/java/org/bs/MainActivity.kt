@@ -14,12 +14,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun btnStartActClick(v: View) {
-        DialogHelper.showDialog(this, "Input building name", ::startScanActivity)
+        DialogHelper.showDialog(this, "Input building name", this::startScanActivity)
     }
 
     private fun startScanActivity(va: String?){
         if (va != null){
-            var i = Intent(applicationContext, ScanActivity::class.java)
+            val i = Intent(applicationContext, ScanActivity::class.java)
             i.putExtra(getString(R.string.ibuildingname), va)
             startActivity(i)
         }
